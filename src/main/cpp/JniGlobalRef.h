@@ -34,8 +34,12 @@ template<typename JniType>
 class EXPORT JniGlobalRef {
  public:
   JniGlobalRef() : _obj(NULL) {}
+  JniGlobalRef(JNIEnv *env, JniType obj) : _obj((JniType) env->NewGlobalRef(obj)) {}
   JniGlobalRef(const JniGlobalRef<JniType> &ref) : _obj(NULL) { set(ref.get()); }
   JniGlobalRef(const JniLocalRef<JniType> &ref) : _obj(NULL) { set(ref.get()); }
+  JniGlobalRef(JniGlobalRef &&rhs): _obj(rhs._obj) {
+    rhs._obj = NULL;
+  }
 
   ~JniGlobalRef() { set(NULL); }
 

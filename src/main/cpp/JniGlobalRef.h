@@ -30,7 +30,7 @@ namespace spotify {
 namespace jni {
 
 // RAII helper to maintain global references automatically.
-template<typename JniType>
+template<typename JniType = jobject>
 class EXPORT JniGlobalRef {
  public:
   JniGlobalRef() : _obj(NULL) {}
@@ -62,8 +62,6 @@ class EXPORT JniGlobalRef {
   }
 
   operator JniType() const { return _obj; }
-
-  void operator=(const JniLocalRef<JniType> &ref) { set(ref.get()); }
 
  private:
   JniType _obj;
